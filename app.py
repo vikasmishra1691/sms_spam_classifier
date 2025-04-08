@@ -2,17 +2,18 @@ import streamlit as st
 import pickle
 import string
 import nltk
+import os
+
+# Set a specific directory for NLTK data that Render can write to
+nltk_data_dir = os.path.join(os.path.expanduser('~'), 'nltk_data')
+os.makedirs(nltk_data_dir, exist_ok=True)
+nltk.data.path.append(nltk_data_dir)
+
+# Always download resources at startup
+nltk.download('punkt', download_dir=nltk_data_dir)
+nltk.download('stopwords', download_dir=nltk_data_dir)
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
-
-# Make sure NLTK resources are downloaded
-try:
-    nltk.data.find('tokenizers/punkt')
-    nltk.data.find('corpora/stopwords')
-except LookupError:
-    nltk.download('punkt')
-    nltk.download('stopwords')
-
 ps = PorterStemmer()
 
 def transform_text(text):
